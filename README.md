@@ -38,7 +38,8 @@ A web-based **customer support chatbot** for telecom services built using **Fast
 ```bash
 git clone https://github.com/yourusername/telecom-chatbot.git
 cd telecom-chatbot
-2. Install Dependencies
+
+### 2. Install Dependencies
 bash
 Copy
 Edit
