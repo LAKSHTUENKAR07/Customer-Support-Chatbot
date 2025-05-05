@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Support</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chat-container {
+      background: white;
+      width: 500px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: #0077cc;
+      color: white;
+      padding: 16px;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .chat-box {
+      padding: 16px;
+      height: 450px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .msg-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ccc;
+    }
+
+    .msg {
+      max-width: 70%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .user-row {
+      flex-direction: row-reverse;
+    }
+
+    .user-row .msg {
+      background: #dcf8c6;
+      border-bottom-right-radius: 0;
+    }
+
+    .bot-row .msg {
+      background: #e4e6eb;
+      border-bottom-left-radius: 0;
+    }
+
+    .input-container {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      border: none;
+      padding: 14px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    button {
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    .feedback {
+      margin-top: 4px;
+      font-size: 18px;
+      display: flex;
+      gap: 10px;
+      cursor: pointer;
+      color: #888;
+    }
+
+    .feedback span:hover {
+      color: #0077cc;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">Customer Support</div>
+    <div class="chat-box" id="chat"></div>
+    <div class="input-container">
+      <input type="text" id="msg" placeholder="Ask about your issues..." />
+      <button onclick="sendMsg()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    async function sendMsg() {
+      const input = document.getElementById("msg");
+      const chat = document.getElementById("chat");
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      // User Message
+      const userRow = document.createElement("div");
+      userRow.className = "msg-row user-row";
+      userRow.innerHTML = `
+        <div class="avatar">👤</div>
+        <div class="msg">${msg}</div>
+      `;
+      chat.appendChild(userRow);
+      chat.scrollTop = chat.scrollHeight;
+      input.value = "";
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/chat", {
+          method: "POST",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg })
+        });
+
+        const data = await res.json();
+        const response = data.response || "Sorry, something went wrong.";
+
+        // Bot Message with Feedback
+        const botRow = document.createElement("div");
+        botRow.className = "msg-row bot-row";
+        botRow.innerHTML = `
+          <div class="avatar">🤖</div>
+          <div>
+            <div class="msg">${response}</div>
+            <div class="feedback">
+              <span onclick="giveFeedback('up')">👍</span>
+              <span onclick="giveFeedback('down')">👎</span>
+            </div>
+          </div>
+        `;
+        chat.appendChild(botRow);
+        chat.scrollTop = chat.scrollHeight;
+
+      } catch (error) {
+        const errorRow = document.createElement("div");
+        errorRow.className = "msg-row bot-row";
+        errorRow.innerHTML = `
+          <div class="avatar">🤖</div>
+          <div class="msg">⚠️ Error: Could not reach the chatbot server.</div>
+        `;
+        chat.appendChild(errorRow);
+        chat.scrollTop = chat.scrollHeight;
+      }
+    }
+
+    function giveFeedback(type) {
+      alert(type === "up" ? "Thanks for your feedback! 👍" : "Sorry to hear that! 👎");
+      // Optional: Send feedback to server here
+    }
+
+    // Send message on Enter key
+    document.getElementById("msg").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") sendMsg();
+    });
+  </script>
+</body>
+</html>
