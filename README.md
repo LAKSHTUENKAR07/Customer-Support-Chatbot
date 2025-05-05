@@ -14,9 +14,12 @@ A web-based **customer support chatbot** for telecom services built using **Fast
 - 🔍 **AI-powered responses** using GPT-4
 - 🖥️ **Frontend chat UI** with clean HTML/CSS interface
 - ⚡ **FastAPI backend** for message processing
+- 🧠 **Custom Support Persona**: Preconfigured prompt simulates a telecom support agent with guided behavior
+- 🗂️ **Custom Data Handling Ready**: Easily adaptable to integrate your own telecom-specific FAQs, databases, or logs
 - 🔁 **User feedback system** (thumbs up/down)
 - 🔐 **Environment-secured API key** with `.env`
 - 🌍 **CORS-enabled** for smooth frontend-backend communication
+
 
 ---
 
