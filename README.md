@@ -38,50 +38,33 @@ A web-based **customer support chatbot** for telecom services built using **Fast
 ```bash
 git clone https://github.com/yourusername/telecom-chatbot.git
 cd telecom-chatbot
+```
 
 ### 2. Install Dependencies
-bash
-Copy
-Edit
+
+```bash
 pip install -r requirements.txt
-3. Set OpenAI API Key
-Create a .env file in the root directory:
+```
 
-ini
-Copy
-Edit
+### 3. Set OpenAI API Key
+Create a .env file in the root directory and add your OpenAI key:
+
+```bash
 OPENAI_API_KEY=your_openai_api_key
-4. Run the Backend
-bash
-Copy
-Edit
+```
+
+### 4. Run the Backend
+Start the FastAPI server using Uvicorn:
+
+```bash
 uvicorn main:app --reload
-5. Launch Frontend
-Simply open index.html in your web browser.
+```
 
-🌐 Deployment (Optional)
-You can deploy the backend using platforms like:
+### 5. Launch the Frontend
+Open the index.html file directly in your browser:
 
-Render
+```bash
+./index.html
+```
+Now you can chat with your telecom support bot!
 
-Railway
-
-Heroku
-
-And serve the frontend via:
-
-GitHub Pages
-
-Vercel
-
-Netlify
-
-📜 License
-This project is licensed under the MIT License.
-
-🙌 Acknowledgements
-OpenAI
-
-FastAPI
-
-Uvicorn
